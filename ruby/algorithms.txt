@@ -1,0 +1,33 @@
+Elevator Algorithm
+- When you arrive at the elevator, press the "up" or "down" button/arrow to summon the elevator, whether you want to go up or down respectively.
+- Wait for a sound or light to indicate that the elevator going your desired direction is present.
+- When the elevator arrives, enter through the open elevator doors.
+- Once inside, find the panel of numbers and letters from which you can select your destination floor.
+- Start at the lowest-left button.
+- Until you find a button that matches your desired destination:
+    + Check to see if the button matches your desired destination
+    + If it does not:
+        * move to the button immediately right of that button. If there is not a button to the right, move to the button one row above all the way to the left.
+    + If it does:
+        * press it.
+    + If you have cycled through all of the buttons and you have not found a match:
+        * ask a human to clarify which button to press.
+- Move away from the panel of buttons toward the back of the elevator if possible.
+- Remain on the elevator until it reaches your desired floor.
+- Exit the elevator when the doors open on your floor, only after allowing the ladies to leave first. You are a chivalrous robot, after all.
+
+
+Common Algorithm: Fill Dishwasher
+- When you finish using a dish, bring it into the kitchen.
+- Very briefly rinse the dish with water to clear any large waste.
+- Place your dish next to the sink with any other dishes that have been left there.
+- Open the dishwasher door.
+- If the dishwasher is clean
+    + empty the dishes into their appropriate cupboards.
+- For each dish remaining next to the sink:
+    + If the dishwasher is full and dirty:
+        * place detergent in the appropriate container, close door and start dishwasher cycle.
+    + Otherwise:
+        * Place dish into the dishwasher.
+
+
