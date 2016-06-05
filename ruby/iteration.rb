@@ -59,14 +59,14 @@ p method_test_array.drop_while { |item| item == 'b'}
 # select {|key, value| block} → a_hash (destructive with !)
 # drop_while {|key, value| block} → a_hash
 
-p method_test_hash = {'a'=>1, 'b'=>1, 'c'=>2, 'd'=>2, 'e'=>2, 'f'=>3, 'g'=>3}
+p method_test_hash = {a: 1, b: 1, c: 2, d: 2, e: 2, f: 3, g: 3}
 
 p method_test_hash.delete_if { |key, value| value == 1}
 
 p method_test_hash.keep_if { |key, value| value == 2}
 
-p method_test_hash.select! { |key, value| key == 'c' || key == 'd'}
+p method_test_hash.select! { |key, value| key == :c || key == :d}
 
-p Hash[method_test_hash.drop_while { |key, value| key == 'c'}]
+p Hash[method_test_hash.drop_while { |key, value| key == :c}]
 
 
