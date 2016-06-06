@@ -4,6 +4,12 @@
 ### PSEUDOCODE ###
 =begin comment
 
+Letter Type Method:
+- Take a letter as an argument
+- If vowel, return 'v'
+- If consonant, return 'c'
+- If not a letter, return nil
+
 Next Vowel Method:
 - Take a vowel as an argument
 - Return the next vowel in the sequence 'aeiou', wrapping to the beginning for u 
@@ -12,24 +18,39 @@ Next Consonant Method:
 - Take a consonant as an argument
 - Return the next consonant in the alphabet, omitting 'aeiou'
 
-Letter Type Method:
-- Take a letter as an argument
-- If vowel, return 'v'
-- If consonant, return 'c'
-- If not a letter, return nil
+Alias Algorithm:
+- Take a word (a name)
+- Iterate through each letter in a word
+- Remember whether it is capitalized or not, then change to lower case if needed
+- For each letter:
+	- if it's a vowel, change to the next vowel (next vowel method)
+	- if it's a consonant, change to the next consonant (next consonant method)
+	- if it's neither, keep it the same
+- Recapitalize if it was originally capitalized
 
+Handler:
+- Take a string of two names
+- Split them into a two element array and reverse their positions
+- For both the first name and last name, run the alias algorithm
+- Return a string of the name recombined from the results of the alias algorithm
+
+User Interface:
 - Ask user for name (first + last)
-- Get user input as a string, and downcase the string
-- Create an array from the string, with the first and last name as separate elements
-- Reverse the order of the array elements
-- 
+- Get user input as a string
+- Make sure the user entered a string of only a first name and last name
+	Inform the user of error if not
+- Run the Handler on the string
+- Store both the original name and the new alias as a new element in an array
+- Give the user the option to repeat
+- Print each original name and alias from the session when the user chooses to quit
+- End program
 
 =end
 ### END PSEUDOCODE ###
 
+
 ### Set Global Variables ###
 
-# alphabet = 'abcdefghijklmnopqrstuvwxyz'
 $vowels = 'aeiou'
 $consonants = 'bcdfghjklmnpqrstvwxyz'
 
@@ -136,7 +157,9 @@ end
 ### Implement UI ###
 
 run = true
+alias_array = []
 
+# collect names, run algorithm, store result and repeat as necessary
 while run == true
 
 	# prompt for and collect name
@@ -148,7 +171,7 @@ while run == true
 	# if the user enters two strings separated by a space, find an alias
 	if user_name.split(' ').length == 2
 		spy_alias = spy_name_handler(user_name)
-		puts "#{user_name} is also known as #{spy_alias}"
+		alias_array.push([user_name, spy_alias])
 	else
 		puts "Your input is not in the format of a first name and last name."
 	end
@@ -158,6 +181,11 @@ while run == true
 	quit = gets.chomp
 	if quit == 'quit' then run = false end
 
+
 end
 
+# iterate through the name/alias pairs and print result
+alias_array.each do |pair_array|
+	puts pair_array[0] + " is also known as " + pair_array[1]
+end
 
