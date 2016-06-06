@@ -21,6 +21,10 @@ class Puppy
   	food_array.each { |item| puts "Now i'm eating #{item}."}
   end
 
+  def initialize()
+  	puts "initializing new puppy instance..."
+  end
+
 end
 
 
