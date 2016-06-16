@@ -15,7 +15,7 @@
 
 function longestWord(myAry) {
 	var longest = "";
-	for (i = 0; i<myAry.length; i++) {
+	for (var i = 0; i<myAry.length; i++) {
 		if (myAry[i].length > longest.length) {
 			longest = myAry[i];
 		}
@@ -24,7 +24,7 @@ function longestWord(myAry) {
 }
 
 
-/*** PSEUDOCODE for object_match function ***
+/*** PSEUDOCODE for objectMatch function ***
 - Accept two objects (hashes)
 - For each key in object 1:
 	- access the value of the key in object 1
@@ -46,8 +46,39 @@ function objectMatch(object1, object2) {
 }
 
 
+/*** PSEUDOCODE for randomGenerator function ***
+- Take an integer into the function
+- Initialize an array
+- Initialize a string and set it equal to the alphabet
+- Loop the number of times equal to the argument passed to the function
+	- save into the array a random string between 1 and 10 characters long
+		- use a random function to determine a random string length
+		- user a random function to select a random letter for each position in the string
+*/
+
+
+function randomGenerator(int) {
+	var myArray = [];
+	var alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+	for (var i=0; i<int; i++) {
+		var word = "";
+		var wordLength = Math.floor((Math.random()*10)+1);
+		for (j=0; j<wordLength; j++) {
+			word += alphabet[Math.floor(Math.random()*26)];
+		}
+		myArray.push(word);
+	}
+
+	return myArray;
+}
+
+
+
 
 ///--- DRIVER CODE ---///
+
+// Test for longestWord
 
 cantStop1 = ["I got this feeling",
 			 "inside my bones",
@@ -71,6 +102,8 @@ console.log(longestWord(cantStop2));
 console.log(longestWord(cantStop3));
 
 
+// Test for objectMatch
+
 myObject1 = {name: "Alice",
 			 age: 44,
 			 gender: "female",
@@ -88,4 +121,13 @@ myObject3 = {name: "Li",
 
 console.log(objectMatch(myObject1, myObject2));
 console.log(objectMatch(myObject1, myObject3));
+
+
+// Test for randomGenerator
+
+for (var i = 0; i < 10; i++) {
+	thisArray = randomGenerator(10);
+	console.log(thisArray);
+	console.log(longestWord(thisArray));
+}
 
