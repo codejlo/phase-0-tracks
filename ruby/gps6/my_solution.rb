@@ -99,3 +99,31 @@ STATE_DATA.each do |state, pop_data|
   state_instance.virus_effects
 end
 
+#=======================================================================
+
+# REFLECTION
+=begin
+
+What are the differences between the two different hash syntaxes shown in the state_data file?
+- string vs. symbol keys: symbols used for data descriptions, str for unique
+- => vs : notation, based on the above
+
+What does require_relative do? How is it different from require?
+Require_relative is a method that takes a string and returns the information
+in another file, using a path relative to the current directory.
+
+What are some ways to iterate through a hash?
+#each and #map are useful here. When all you really want to do is create an
+interaction, like printing something to the console, .each is great
+because there's not modification to the existing array or the returned array.
+#map is more for when we want to return an array that has some of the data
+manipulated.
+
+When refactoring virus_effects, what stood out to you about the variables, if anything?
+Just a ton of repetition within the called functions.
+
+What concept did you most solidify in this challenge?
+Understand scope with 'require' and 'private' were really helpful (and new).
+
+
+=end
