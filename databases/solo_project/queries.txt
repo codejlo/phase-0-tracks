@@ -1,0 +1,85 @@
+1.  SELECT * FROM categories;
+
+    1|trek|900|56|true|1
+    2|trek|trail jumper|48|true|2
+    4|scott|sub 10|54|false|3
+    5|scott|matrix|52|true|3
+    6|marin|headlands|50|false|2
+    7|marin|fillmore|50|true|3
+
+    // Note: id=3 entered erroneously and deleted prior to query
+
+2.  UPDATE bicycles SET in_stock="true" WHERE model="headlands";
+    SELECT * FROM bicycles WHERE model="headlands";
+
+    6|marin|headlands|50|true|2
+
+3.  SELECT * FROM bicycles, categories WHERE bicycles.category=categories.id;
+
+    1|trek|900|56|true|1|1|road|for on-road perfromance cycling
+    2|trek|trail jumper|48|true|2|2|mountain|for off-road performance cycling
+    4|scott|sub 10|54|false|3|3|urban|for commuting and general-purpose riding
+    5|scott|matrix|52|true|3|3|urban|for commuting and general-purpose riding
+    6|marin|headlands|50|true|2|2|mountain|for off-road performance cycling
+    7|marin|fillmore|50|true|3|3|urban|for commuting and general-purpose riding
+
+4.  SELECT bicycles.brand, bicycles.model, categories.name,
+    categories.description FROM bicycles JOIN categories ON bicycles.category
+    = categories.id;
+
+    trek|900|road|for on-road perfromance cycling
+    trek|trail jumper|mountain|for off-road performance cycling
+    scott|sub 10|urban|for commuting and general-purpose riding
+    scott|matrix|urban|for commuting and general-purpose riding
+    marin|headlands|mountain|for off-road performance cycling
+    marin|fillmore|urban|for commuting and general-purpose riding
+
+5.  DELETE FROM bicycles WHERE model="trail jumper";
+    SELECT * FROM bicycles;
+
+    //Note: id=3 was already deleted prior to starting exercise.
+
+    1|trek|900|56|true|1
+    4|scott|sub 10|54|false|3
+    5|scott|matrix|52|true|3
+    6|marin|headlands|50|true|2
+    7|marin|fillmore|50|true|3
+
+
+JOINS:
+
+<INNER JOIN>
+SELECT bicycles.model, bicycles.in_stock, categories.name FROM bicycles
+INNER JOIN categories ON bicycles.category=categories.id;
+
+900|true|road
+sub 10|false|urban
+matrix|true|urban
+headlands|true|mountain
+fillmore|true|urban
+
+<LEFT JOIN>
+SELECT bicycles.model, bicycles.in_stock, categories.name FROM bicycles
+LEFT JOIN categories ON bicycles.category=categories.id;
+
+900|true|road
+sub 10|false|urban
+matrix|true|urban
+headlands|true|mountain
+fillmore|true|urban
+twin peaks|false|
+
+
+<RIGHT JOIN>
+SELECT bicycles.model, bicycles.in_stock, categories.name FROM categories
+LEFT JOIN bicycles ON bicycles.category=categories.id;
+// Note: written as a LEFT JOIN but with the tables reversed, 
+// since SQLite doesn't support RIGHT JOIN.
+
+900|true|road
+headlands|true|mountain
+fillmore|true|urban
+matrix|true|urban
+sub 10|false|urban
+||cyclocross
+
