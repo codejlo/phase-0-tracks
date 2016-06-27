@@ -1,5 +1,8 @@
 # my_todo.rb
 # persistent, editable todo list
+# before printing, the program reorders the to-do list,
+# placing the open tasks before the closed tasks, in
+# date order.
 
 # include necessary external functionality
 require 'sqlite3'
@@ -56,10 +59,7 @@ def complete_item(db, id)
 	db.execute(complete_item_cmd, [id])
 end
 
-def insert_row()
-	if row[2] == "open"
-
-	puts "B1"
+def insert_row(row, table)
 
 	position = 0
 
@@ -67,159 +67,69 @@ def insert_row()
 	month = row[3].slice(0..1).to_i
 	day = row[3].slice(3..4).to_i
 
-	if open_table.length == 0
-		open_table.insert(0,row)
-		puts "B2"
+	if table.length == 0
+		table.insert(0,row)
 	else
-		new_length = open_table.length + 1
-		open_table.map do |compare_row|
-			puts "B3"
+		new_length = table.length + 1
+		table.map do |compare_row|
+
 			c_year = compare_row[3].slice(6..9).to_i
 			c_month = compare_row[3].slice(0..1).to_i
 			c_day = compare_row[3].slice(3..4).to_i
 
 
 			if year < c_year
-				puts "B4"
-				open_table.insert(position, row)
+				table.insert(position, row)
 				break
 			elsif year == c_year
 				if month < c_month
-					puts "B5"
-					open_table.insert(position, row)
+					table.insert(position, row)
 					break
 				elsif month == c_month
 					if day <= c_day
-						puts "B6"
-						open_table.insert(position, row)
+						table.insert(position, row)
 						break
 					end
 				end
 			end
-			puts "B7"
-			position +=1
-			
+			position +=1			
 		end
-		open_table.insert(position, row) if open_table.length < new_length
-		puts "B8"
+		# add final row if it wasn't place ahead of any in the existing table
+		table.insert(position, row) if table.length < new_length
 	end
+
+	return table
 end
 
 
 def order_todo(db, create_tbl)
+	
 	array_to_order = db.execute("SELECT * FROM todo_table")
 	open_table = []
 	closed_table = []
 
-	puts "A"
-
+	# Construct array ordered by date
 	array_to_order.each do |row|
-		place_in_array = nil
-		placed = false
-		p row
+
 		# sort open and closed rows separately
 		if row[2] == "open"
-
-			puts "B1"
-
-			position = 0
-
-			year = row[3].slice(6..9).to_i
-			month = row[3].slice(0..1).to_i
-			day = row[3].slice(3..4).to_i
-
-			if open_table.length == 0
-				open_table.insert(0,row)
-				puts "B2"
-			else
-				new_length = open_table.length + 1
-				open_table.map do |compare_row|
-					puts "B3"
-					c_year = compare_row[3].slice(6..9).to_i
-					c_month = compare_row[3].slice(0..1).to_i
-					c_day = compare_row[3].slice(3..4).to_i
-
-
-					if year < c_year
-						puts "B4"
-						open_table.insert(position, row)
-						break
-					elsif year == c_year
-						if month < c_month
-							puts "B5"
-							open_table.insert(position, row)
-							break
-						elsif month == c_month
-							if day <= c_day
-								puts "B6"
-								open_table.insert(position, row)
-								break
-							end
-						end
-					end
-					puts "B7"
-					position +=1
-					
-				end
-				open_table.insert(position, row) if open_table.length < new_length
-				puts "B8"
-			end
+			open_table = insert_row(row, open_table)
 
 		# now for the 'closed' statuses
 		else
-			position = 0
-			puts "C1"
+			closed_table = insert_row(row, closed_table)
 
-			year = row[3].slice(6..9).to_i
-			month = row[3].slice(0..1).to_i
-			day = row[3].slice(3..4).to_i
-
-			if closed_table.length == 0
-				closed_table.insert(0,row)
-				puts "C2"
-			else
-				new_length = closed_table.length + 1
-
-				closed_table.map do |compare_row|
-
-					c_year = compare_row[3].slice(6..9).to_i
-					c_month = compare_row[3].slice(0..1).to_i
-					c_day = compare_row[3].slice(3..4).to_i
-
-
-					if year < c_year
-						closed_table.insert(position, row)
-						puts "C3"
-						break
-					elsif year == c_year
-						if month < c_month
-							closed_table.insert(position, row)
-							puts "C4"
-							break
-						elsif month == c_month
-							if day <= c_day
-								closed_table.insert(position, row)
-								puts "C5"
-								break
-							end
-						end
-					end
-					position +=1
-					puts "C6"
-				end
-				closed_table.insert(position, row) if closed_table.length < new_length
-				puts "C7"
-			end
 		end
 	end
 
+	# put arrays together
 	ordered_array = open_table + closed_table
-	p ordered_array
 
-
+	# Drop old table, add a new one with new order
 	db.execute("DROP TABLE todo_table")
 	db.execute(create_tbl)
 
+	# Add elements to the table in the new order
 	ordered_array.each do |element|
 		element.shift
 		reorder_table_cmd = <<-SQL
@@ -265,10 +175,6 @@ def print_todo(db)
 	end
 end
 
-#Test code
-#add_item(db, "Mow lawn", "open", "11-25-2016", "cut the grass to 3/4 inch", 2)
-#add_item(db, "eat candy", "open", "06-27-2016", "mmmmmm candy", 3)
-#change_due_date(db,1,"06-28-2016")
 
 ### USER INTERFACE ###
 
