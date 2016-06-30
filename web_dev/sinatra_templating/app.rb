@@ -25,3 +25,10 @@ post '/students' do
 end
 
 # add static resources
+
+# Run age query
+
+get '/students/query' do
+  @student_query = db.execute("SELECT * FROM students WHERE students.age=?", params['age'].to_i)
+  erb :query
+end
