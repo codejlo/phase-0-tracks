@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Run Query</title>
+</head>
+<body>
+  <form action="/students/query" method="GET">
+    <input type="text" name="age" placeholder="Age">
+    <button type="submit">Find matching students</button>
+  </form>
+   <ul>
+    <% @student_query.each do |student| %>
+      <li><%= student['name'] %>, <%= student['campus'] %></li>
+    <% end %>
+  </ul>
+</body>
+</html>
