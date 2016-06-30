@@ -44,3 +44,33 @@ get '/students/:id' do
   student = db.execute("SELECT * FROM students WHERE id=?", [params[:id]])[0]
   student.to_s
 end
+
+# display an address w/ GET
+get '/contactinfo/' do
+	"#{params[:number]} #{params[:street]}<br>#{params[:city]}, #{params[:state]} #{params[:zip]}" 
+end
+
+# good job
+get '/goodjob/' do
+	name = params[:name]
+	if name != nil
+		"Good job, #{name}!"
+	else
+		"Good job!"
+	end
+end
+
+get '/adder/:x/plus/:y' do
+	result = params[:x].to_i + params[:y].to_i
+	result.to_s
+end
+
+get '/campus_find/:campus' do
+	students = db.execute("SELECT * FROM students WHERE campus=?", [params[:campus]])
+	response = ""
+	students.each do |student|
+		response << "#{student['name']}, #{student['age']}<br>"
+	end
+	response
+end
+
